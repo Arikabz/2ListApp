@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Enter List ID </h1>
+    <h2 id="listID"><%= listID %></h2>
+    <form action="/getList"  method="POST">
+        <input type="text" placeholder="LIST ID" name="listID">
+        <input type="submit">
+    </form>
+    <h2>Create new List</h2>
+    <form action="/newList" method="POST">
+        <input type="submit" placeholder="New List">
+    </form>
+
+    <h2>Add Item</h2>
+
+    <form action="addItem()" >
+        <input type="text" placeholder="Author" name="author">
+        <input type="text" placeholder="No" name="itemNo">
+        <input type="text" placeholder="Item" name="itemName">
+        <input type="submit">
+    </form>
+    
+    <h1>List:</h1>
+    <ul class="list">
+        <% for(let i=0; i<items.length; i++){%>
+        <li class"item">
+            <span id="itemName"><%=i+1%>. <%= items[i].itemName %></span>
+            <span class="pre-author"> - </span>
+            <span id="author"><%= items[i].author %></span>
+        </li>
+       <% }%>
+    </ul>
+
+    <script src='js/main.js'></script>
+</body>
+</html>
