@@ -19,11 +19,12 @@
 </head>
 <body>
     <h1>Enter List ID </h1>
-    <h2 id="listID"><%= listID %></h2>
     <form action="/getList"  method="POST">
         <input type="text" placeholder="LIST ID" name="listID">
         <input type="submit">
     </form>
+    <h2 id="listID"><%= listID %></h2>
+
     <h2>Create new List</h2>
     <form action="/newList" method="POST">
         <input type="submit" placeholder="New List">
@@ -31,20 +32,18 @@
 
     <h2>Add Item</h2>
 
-    <form action="addItem()" >
-        <input type="text" placeholder="Author" name="author">
-        <input type="text" placeholder="No" name="itemNo">
-        <input type="text" placeholder="Item" name="itemName">
-        <input type="submit">
-    </form>
-    
+        <div>
+        <input id="author" type="text" placeholder="Author" name="author">
+        <input id="itemName" type="text" placeholder="Item" name="itemName">
+        <button type="button" onclick="addItem()" id="addItem">Add</button>
+        </div> 
     <h1>List:</h1>
     <ul class="list">
         <% for(let i=0; i<items.length; i++){%>
-        <li class"item">
-            <span id="itemName"><%=i+1%>. <%= items[i].itemName %></span>
+        <li class="item">
+            <span class="num-name"><%=i+1%>. <%= items[i].itemName %></span>
             <span class="pre-author"> - </span>
-            <span id="author"><%= items[i].author %></span>
+            <span ><%= items[i].author %></span>
         </li>
        <% }%>
     </ul>

@@ -18,7 +18,7 @@ MongoClient.connect(connectionString, { useUnifiedTopology: false })
     })
 
 app.set('view engine', 'ejs')
-app.use(express('public'))
+app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
 
@@ -67,6 +67,26 @@ app.post('/getList', (req,res) => {
         console.log('No input')
     }
 })
+app.get('/getList2/:id', (req,res) => {
+    const id = req.params.id
+    if(true){
+    const listItems = listCollection.find({"listID": id}).toArray()
+            .then(result=> {
+                if(result[0]){
+                    console.log(result[0].items)
+                    res.render('index.ejs', {items: result[0].items,
+                        listID: result[0].listID})
+                } 
+                else{
+                    res.render('index.ejs', {items: [], listID: 'List not found.'})
+                    console.log('List ID not found')
+                }
+       })
+    }
+    else{
+        console.log('No input')
+    }
+})
 
 app.get('api/:id', (req,res) => {
     const id = req.params.id
@@ -91,20 +111,33 @@ app.post('/newList', (req,res) => {
         })
 })
 
-app.put('/addItem/:id', (req,res) => {
-    const id = request.params.id
-    const newItem = new Item(newNumber(), req.body.itemName, req.body.author)
-    var arrlist = listCollection.find(list => list.listID == id).items
-    arrlist.push(newItem)
-    listCollection.findOneAndUpdate({listID: id},
+function newNumber(n){
+    n = parseInt(n,10)
+    return n+1
+}
+
+
+app.post('/addItem/:id', (req,res) => {
+    const id = req.params.id
+    console.log(id)
+    const newItem = new Item(newNumber(req.body.lastitemNo), req.body.itemName, req.body.author)
+    const findList = listCollection.find({"listID": id}).toArray()
+        .then(result => {
+            let updatedList = result[0].items
+            updatedList.push(newItem)
+            console.log(updatedList)
+            listCollection.findOneAndUpdate({listID: id},
         {
             $set: {
-                items: arrlist
+                items: updatedList
             }
         }, {
             upsert: false
-        })
+        }).then(
+            res.json('Item added.')
+        )
         .catch(error => console.log(error))
+        }).catch(error => console.log(error))
 })
 
 app.listen(PORT, ()=>{
