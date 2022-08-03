@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 const MongoClient = require('mongodb').MongoClient
-const bodyParser = require('body-parser')
 require('dotenv').config()
 const connectionString = process.env.connectionString
 const PORT = 2121
@@ -18,7 +17,8 @@ MongoClient.connect(connectionString, { useUnifiedTopology: false })
     })
 
 app.set('view engine', 'ejs')
-app.use(express.static('public'))
+app.use('*/js',express.static('public/js'));
+app.use('*/css',express.static('public/css'));
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
 
@@ -69,7 +69,6 @@ app.post('/getList', (req,res) => {
 })
 app.get('/getList2/:id', (req,res) => {
     const id = req.params.id
-    if(true){
     const listItems = listCollection.find({"listID": id}).toArray()
             .then(result=> {
                 if(result[0]){
@@ -82,10 +81,6 @@ app.get('/getList2/:id', (req,res) => {
                     console.log('List ID not found')
                 }
        })
-    }
-    else{
-        console.log('No input')
-    }
 })
 
 app.get('api/:id', (req,res) => {
@@ -106,7 +101,23 @@ app.post('/newList', (req,res) => {
     console.log(newList)
     listCollection.insertOne(newList)
         .then(result => {
-            res.redirect('/')
+            res.redirect(`/getList2/${newList.listID}`)
+            console.log(result)
+        })
+})
+
+app.post('/newListAdd1', (req,res) => {
+    const itemName = req.body.itemName;
+    const author = req.body.author;
+    const newItem = new Item(1, itemName, author)
+    const newList = new List()
+    newList.items.push(newItem)
+    console.log(newList)
+    listCollection.insertOne(newList)
+        .then(result => {
+            //res.render('index.ejs', {items: newItem, listID: newList.listID})
+            //res.redirect(`/getList2/${newList.listID}`)
+            res.json(newList.listID)
             console.log(result)
         })
 })

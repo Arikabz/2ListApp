@@ -1,13 +1,69 @@
 //document.querySelector("#addItem").addEventListener("click", moo())
+function checkItems(){
+    const listContent = document.querySelector(".list").childElementCount
+    console.log(listContent)
+    return listContent 
+}
 
-async function addItem(){
-    const lastitemNo = document.querySelector(".list").lastElementChild.querySelector('.num-name').innerText.charAt(0)
+function checkInput(){
+    const author = document.querySelector('#author').value;
+    const itemName = document.querySelector('#itemName').value;
+    return author && itemName 
+}
+
+function checkList(){
+    const id = document.querySelector('#listID').innerText
+    console.log(id);
+    return id
+}
+
+function whatDo(){
+    if(!checkInput()){
+        console.log('no input');
+        return
+    }else if(!checkList()){
+        console.log('no list')
+        newListAndAdd1()
+    }
+    else if(!checkItems()){
+        console.log('first item')
+        addItem(0)
+    }else{
+        console.log('getting last')
+        const num = document.querySelector('.list').lastElementChild.querySelector('.num-name').innerText.charAt(0)
+        console.log(num)
+        addItem(parseInt(num,10))
+    }
+}
+
+async function newListAndAdd1(){
+    const author = document.querySelector('#author').value;
+    const itemName = document.querySelector('#itemName').value;
+    try{
+        const response = await fetch('/newListAdd1',{
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                author: author,
+                itemName: itemName
+            })
+        })
+        const data = await response.json()
+        console.log(data)
+        location.href = `http://localhost:2121/getList2/${data}`
+    }catch(err){
+        console.log(err)
+    }
+}
+
+async function addItem(n){
+    const lastitemNo = n;
     const ID = document.querySelector('#listID').innerText;
     const author = document.querySelector('#author').value;
     const itemName = document.querySelector('#itemName').value;
     console.log(ID,lastitemNo,itemName, author)
     try{
-        const response = await fetch(`addItem/${ID}`,{
+        const response = await fetch(`/addItem/${ID}`,{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
