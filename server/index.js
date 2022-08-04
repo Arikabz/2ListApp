@@ -151,6 +151,34 @@ app.post('/addItem/:id', (req,res) => {
         }).catch(error => console.log(error))
 })
 
+
+app.put('/deleteItem', (req,res) => {
+    listCollection.find({listID: req.body.listID}).toArray()
+        .then(result =>{
+            let itemsUpdated = result[0].items
+            console.log(itemsUpdated)
+            let indexDel = itemsUpdated.findIndex(x=> (x.itemNo==req.body.itemNo)&&
+            (x.itemName==req.body.itemName)&&(x.author==req.body.author))
+            console.log('indexDel = ' + indexDel)
+            itemsUpdated.splice(indexDel,1)
+    listCollection.findOneAndUpdate({listID: req.body.listID},{
+        $set: {
+            items: itemsUpdated
+        }
+    },{
+        upsert: false
+    })
+                .then(result=> {
+                    console.log(result)
+                    res.json('Item deleted.')
+                })
+        .catch(error=> console.log(error))
+
+        })
+        .catch(error=> console.log(error))
+
+})
+
 app.listen(PORT, ()=>{
     console.log(`Listening on ${PORT}`)
 })

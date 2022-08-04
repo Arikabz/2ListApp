@@ -18,18 +18,26 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Enter List ID </h1>
+    <header>
+        <h1>ListApp</h1>
+    </header>
+    <section class="enter-list">
+    <h2>Enter List ID </h2>
     <form action="/getList"  method="POST">
         <input type="text" placeholder="LIST ID" name="listID">
         <input type="submit">
     </form>
     <h2 id="listID"><%= listID %></h2>
+    </section>
 
+    <section class="new-list">
     <h2>Create new List</h2>
     <form action="/newList" method="POST">
         <input type="submit" placeholder="New List">
     </form>
+    </section>
 
+    <section class="add-item">
     <h2>Add Item</h2>
 
         <div>
@@ -37,6 +45,9 @@
         <input id="itemName" type="text" placeholder="Item" name="itemName">
         <button type="button" onclick="whatDo()" id="addItem">Add</button>
         </div> 
+    </section>
+
+    <section class="list-section">
     <h1>List:</h1>
     <ul class="list">
         <% for(let i=0; i<items.length; i++){%>
@@ -44,9 +55,12 @@
             <span class="num-name"><%=i+1%>. <%= items[i].itemName %></span>
             <span class="pre-author"> - </span>
             <span ><%= items[i].author %></span>
+            <span class="fa fa-check"></span>
+            <span class="fa fa-trash"></span>
         </li>
        <% }%>
     </ul>
+    </section>
 
     <script src='js/main.js'></script>
 </body>

@@ -1,4 +1,43 @@
 //document.querySelector("#addItem").addEventListener("click", moo())
+
+const deleteBtn = document.querySelectorAll('.fa-trash')
+const doneBtn = document.querySelectorAll('.fa-check')
+const item = document.querySelectorAll('.item span')
+const itemCompleted = document.querySelectorAll('.item span.completed')
+
+Array.from(deleteBtn).forEach((element)=>{
+    //turn node list into array to use forEach
+    element.addEventListener('click', deleteItem)
+})
+
+async function deleteItem() {
+    const itemText = this.parentNode.childNodes[1].innerText.split(' ')
+    const author = this.parentNode.childNodes[5].innerText
+    const ID = document.querySelector('#listID').innerText
+    const itemName = itemText[1]
+    const itemNo = parseInt(itemText[0],10)
+    console.log(itemText, author, ID, itemName, itemNo)
+    try{
+        const response = await fetch('/deleteItem', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                listID: ID,
+                itemNo: itemNo,
+                itemName: itemName,
+                author: author
+            })
+        })
+        const data = await response.json()
+        console.log(data)
+        location.href = `http://localhost:2121/getList2/${ID}`
+        location.reload()
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
 function checkItems(){
     const listContent = document.querySelector(".list").childElementCount
     console.log(listContent)
@@ -30,8 +69,8 @@ function whatDo(){
         addItem(0)
     }else{
         console.log('getting last')
-        const num = document.querySelector('.list').lastElementChild.querySelector('.num-name').innerText.charAt(0)
-        console.log(num)
+        const num = document.querySelector('.list').lastElementChild.querySelector('.num-name').innerText.split(' ')[0]
+        console.log(parseInt(num,10))
         addItem(parseInt(num,10))
     }
 }
