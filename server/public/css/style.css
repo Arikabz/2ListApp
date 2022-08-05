@@ -4,7 +4,11 @@
 
 body {
     margin: 0 auto;
-    background-image: url(bkgr.webp);
+    background-image: url(newbkgr.jpg);
+}
+h1 {
+    font-size: 3rem;
+    text-align: center;
 }
 section{
     display: flex;

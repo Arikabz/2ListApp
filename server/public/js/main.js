@@ -84,7 +84,7 @@ function checkInput(){
 
 function checkList(){
     const id = document.querySelector('#listID').innerText
-    console.log(id);
+    console.log(id)
     return id
 }
 
@@ -101,7 +101,7 @@ function whatDo(){
         addItem(0)
     }else{
         console.log('getting last')
-        const num = document.querySelector('.list').lastElementChild.querySelector('.num-name').innerText.split(' ')[0]
+        const num = document.querySelector('.list').lastElementChild.querySelector('.num-name').innerText
         console.log(parseInt(num,10))
         addItem(parseInt(num,10))
     }
@@ -129,7 +129,7 @@ async function newListAndAdd1(){
 
 async function addItem(n){
     const lastitemNo = n;
-    const ID = document.querySelector('#listID').innerText;
+    const ID = document.querySelector('#listID').innerText
     const author = document.querySelector('#author').value;
     const itemName = document.querySelector('#itemName').value;
     console.log(ID,lastitemNo,itemName, author)
