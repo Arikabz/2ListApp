@@ -4,7 +4,7 @@
 
 body {
     margin: 0 auto;
-    background-color: #B284BE;
+    background-image: url(bkgr.webp);
 }
 section{
     display: flex;
