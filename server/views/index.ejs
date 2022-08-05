@@ -52,11 +52,19 @@
     <ul class="list">
         <% for(let i=0; i<items.length; i++){%>
         <li class="item">
+            <% if (items[i].done) { %>
+            <span class="num-name done"><%=i+1%>. <%= items[i].itemName %></span>
+            <span class="pre-author"> - </span>
+            <span ><%= items[i].author %></span>
+            <span class="fa fa-check"></span>
+            <span class="fa fa-trash"></span>
+            <%} else { %>
             <span class="num-name"><%=i+1%>. <%= items[i].itemName %></span>
             <span class="pre-author"> - </span>
             <span ><%= items[i].author %></span>
             <span class="fa fa-check"></span>
             <span class="fa fa-trash"></span>
+            <% } %>
         </li>
        <% }%>
     </ul>

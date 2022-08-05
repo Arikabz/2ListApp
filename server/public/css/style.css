@@ -9,8 +9,21 @@ body {
 section{
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
 }
 section>*{
     text-align: left;
+}
+
+ul {
+    list-style: none;
+}
+
+li.item > span{
+    margin: 1rem 1rem;
+    font-size: 1.7rem;
+}
+
+.done{
+    text-decoration: line-through;
 }

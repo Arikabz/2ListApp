@@ -41,6 +41,7 @@ function Item (itemNo, itemName, author){
             this.itemNo = itemNo
             this.itemName = itemName
             this.author = author
+            this.done = false;
         }
 
 app.get('/', (req,res) => {
@@ -151,6 +152,34 @@ app.post('/addItem/:id', (req,res) => {
         }).catch(error => console.log(error))
 })
 
+app.put('/markDone', (req,res) =>{
+    listCollection.find({listID: req.body.listID}).toArray()
+        .then(result =>{
+            let itemsUpdated = result[0].items
+            console.log(itemsUpdated)
+            let indexUpdate = itemsUpdated.findIndex(x=> (x.itemNo==req.body.itemNo)&&
+            (x.itemName==req.body.itemName)&&(x.author==req.body.author))
+            console.log('indexUpdate = ' + indexUpdate)
+            let done = itemsUpdated[indexUpdate].done
+            if(done){ done = false } else{ done = true }
+            itemsUpdated[indexUpdate].done = done
+    listCollection.findOneAndUpdate({listID: req.body.listID},{
+        $set: {
+            items: itemsUpdated
+        }
+    },{
+        upsert: false
+    })
+                .then(result=> {
+                    console.log(result)
+                    res.json('Item marked done.')
+                })
+        .catch(error=> console.log(error))
+
+        })
+        .catch(error=> console.log(error))
+
+})
 
 app.put('/deleteItem', (req,res) => {
     listCollection.find({listID: req.body.listID}).toArray()
@@ -161,6 +190,9 @@ app.put('/deleteItem', (req,res) => {
             (x.itemName==req.body.itemName)&&(x.author==req.body.author))
             console.log('indexDel = ' + indexDel)
             itemsUpdated.splice(indexDel,1)
+            itemsUpdated.forEach((x,i)=>{
+                x.itemNo = i+1
+            })
     listCollection.findOneAndUpdate({listID: req.body.listID},{
         $set: {
             items: itemsUpdated
